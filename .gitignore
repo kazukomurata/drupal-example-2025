@@ -6,52 +6,52 @@
 # https://www.drupal.org/docs/develop/using-composer
 
 # Ignore configuration files that may contain sensitive information
-/web/sites/*/*settings*.php
-/web/sites/*/*services*.yml
+/docroot/sites/*/*settings*.php
+/docroot/sites/*/*services*.yml
 
 # Ignore paths that may contain user-generated content
-/web/sites/*/files
-/web/sites/*/public
-/web/sites/*/private
-/web/sites/*/files-public
-/web/sites/*/files-private
+/docroot/sites/*/files
+/docroot/sites/*/public
+/docroot/sites/*/private
+/docroot/sites/*/files-public
+/docroot/sites/*/files-private
 
 # Ignore paths that may contain temporary files
-/web/sites/*/translations
-/web/sites/*/tmp
-/web/sites/*/cache
+/docroot/sites/*/translations
+/docroot/sites/*/tmp
+/docroot/sites/*/cache
 
 # Ignore drupal core (if not versioning drupal sources)
-/web/vendor
-/web/core
-/web/modules/README.txt
-/web/modules/contrib
-/web/profiles/README.txt
-/web/profiles/contrib
-/web/sites/development.services.yml
-/web/sites/example.settings.local.php
-/web/sites/example.sites.php
-/web/sites/README.txt
-/web/themes/README.txt
-/web/themes/contrib
-/web/.csslintrc
-/web/.editorconfig
-/web/.eslintignore
-/web/.eslintrc.json
-/web/.gitattributes
-/web/.htaccess
-/web/.ht.router.php
-/web/autoload.php
-/web/composer.json
-/web/composer.lock
-/web/example.gitignore
-/web/index.php
-/web/INSTALL.txt
-/web/LICENSE.txt
-/web/README.txt
-/web/robots.txt
-/web/update.php
-/web/web.config
+/docroot/vendor
+/docroot/core
+/docroot/modules/README.txt
+/docroot/modules/contrib
+/docroot/profiles/README.txt
+/docroot/profiles/contrib
+/docroot/sites/development.services.yml
+/docroot/sites/example.settings.local.php
+/docroot/sites/example.sites.php
+/docroot/sites/README.txt
+/docroot/themes/README.txt
+/docroot/themes/contrib
+/docroot/.csslintrc
+/docroot/.editorconfig
+/docroot/.eslintignore
+/docroot/.eslintrc.json
+/docroot/.gitattributes
+/docroot/.htaccess
+/docroot/.ht.router.php
+/docroot/autoload.php
+/docroot/composer.json
+/docroot/composer.lock
+/docroot/example.gitignore
+/docroot/index.php
+/docroot/INSTALL.txt
+/docroot/LICENSE.txt
+/docroot/README.txt
+/docroot/robots.txt
+/docroot/update.php
+/docroot/web.config
 
 # Ignore vendor dependencies and scripts
 /vendor
@@ -63,3 +63,10 @@
 /drush
 /drupal.phar
 /drupal
+
+# Ignore IED setting files.
+/.idea
+
+# Ignore others
+/recipes/README.txt
+/docroot/README.md
