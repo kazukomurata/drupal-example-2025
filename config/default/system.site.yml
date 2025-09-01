@@ -1,0 +1,15 @@
+_core:
+  default_config_hash: ijfbzDTN4CbE7Sr-6ubWzy_t1vH4OtU1doNCLssVz-4
+langcode: en
+uuid: 8e0ef6d8-c2a6-4308-a567-748813fb92dd
+name: DEMO
+mail: kazuko.murata.85@gmail.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+default_langcode: en
+mail_notification: null
