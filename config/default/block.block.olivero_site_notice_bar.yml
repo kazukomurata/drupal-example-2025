@@ -1,0 +1,47 @@
+uuid: b52df523-7465-4c82-8d6b-2134a1c3222c
+langcode: en
+status: true
+dependencies:
+  module:
+    - site_notice
+    - system
+    - user
+  theme:
+    - olivero
+id: olivero_site_notice_bar
+theme: olivero
+region: highlighted
+weight: -7
+provider: null
+plugin: site_notice_block
+settings:
+  id: site_notice_block
+  label: 'Site Notice Bar'
+  label_display: '0'
+  provider: site_notice
+  message:
+    value: '<p>メッセージを表示</p>'
+    format: basic_html
+  link_url: ''
+  start: ''
+  end: ''
+  background: is-info
+  closable: false
+  storage_key_salt: ''
+visibility:
+  response_status:
+    id: response_status
+    negate: false
+    status_codes:
+      - 200
+  request_path:
+    id: request_path
+    negate: false
+    pages: '<front>'
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous
