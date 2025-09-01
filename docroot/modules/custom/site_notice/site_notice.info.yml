@@ -1,0 +1,5 @@
+name: Site Notice
+type: module
+description: "期間限定のお知らせバーをブロックとして表示。閉じるボタンと設定UI付き。"
+core_version_requirement: ^10 || ^11
+package: Custom

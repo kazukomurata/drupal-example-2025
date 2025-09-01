@@ -1,0 +1,20 @@
+{#
+変数:
+- message    (HTML可: basic_html)
+- link       (任意)
+- background (class)
+- closable   (bool)
+#}
+<div class="site-notice {{ background }}" data-site-notice>
+  <div class="site-notice__inner">
+    <div class="site-notice__message">
+      {{ message }}
+      {% if link %}
+        <a class="site-notice__link" href="{{ link }}">{{ 'Learn more'|t }}</a>
+      {% endif %}
+    </div>
+    {% if closable %}
+      <button class="site-notice__close" type="button" aria-label="{{ 'Close'|t }}" data-site-notice-close>&times;</button>
+    {% endif %}
+  </div>
+</div>

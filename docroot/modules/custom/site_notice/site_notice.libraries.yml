@@ -1,0 +1,6 @@
+notice:
+  js:
+    js/site_notice.js: {}
+  css:
+    theme:
+      css/site_notice.css: {}

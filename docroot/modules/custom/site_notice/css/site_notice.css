@@ -1,0 +1,33 @@
+.site-notice {
+  position: relative;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin: 12px 0;
+}
+.site-notice__inner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.site-notice__message {
+  font-weight: 600;
+}
+.site-notice__link {
+  margin-left: 8px;
+  text-decoration: underline;
+}
+.site-notice__close {
+  border: 0;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* 色バリエーション */
+.site-notice.is-default { background: #edf2f7; color: #1a202c; }
+.site-notice.is-info    { background: #ebf8ff; color: #2c5282; }
+.site-notice.is-success { background: #f0fff4; color: #2f855a; }
+.site-notice.is-warning { background: #fffaf0; color: #975a16; }
+.site-notice.is-danger  { background: #fff5f5; color: #9b2c2c; }

@@ -1,0 +1,7 @@
+site_notice.settings:
+  path: '/admin/config/system/site-notice'
+  defaults:
+    _form: '\Drupal\site_notice\Form\SiteNoticeSettingsForm'
+    _title: 'Site Notice settings'
+  requirements:
+    _permission: 'administer site configuration'
