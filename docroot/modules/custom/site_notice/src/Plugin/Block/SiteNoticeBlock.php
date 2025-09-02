@@ -4,17 +4,17 @@ namespace Drupal\site_notice\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Render\Markup;
-use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\Core\Path\PathMatcherInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
+ * Provides the Site Notice block.
+ *
  * @Block(
  *   id = "site_notice_block",
  *   admin_label = @Translation("Site Notice Bar")
@@ -22,21 +22,29 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SiteNoticeBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
+  /**
+   * Constructs a SiteNoticeBlock object.
+   */
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
     protected ConfigFactoryInterface $configFactory,
+    protected TimeInterface $time,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
       $plugin_id,
       $plugin_definition,
       $container->get('config.factory'),
+      $container->get('datetime.time'),
     );
   }
 
@@ -45,14 +53,14 @@ class SiteNoticeBlock extends BlockBase implements ContainerFactoryPluginInterfa
    */
   public function defaultConfiguration() {
     return [
-        'message' => '',
-        'link_url' => '',
-        'start' => '',
-        'end' => '',
-        'background' => 'is-default',
-        'closable' => FALSE,
-        'storage_key_salt' => '',
-      ] + parent::defaultConfiguration();
+      'message' => '',
+      'link_url' => '',
+      'start' => '',
+      'end' => '',
+      'background' => 'is-default',
+      'closable' => FALSE,
+      'storage_key_salt' => '',
+    ] + parent::defaultConfiguration();
   }
 
   /**
@@ -147,20 +155,23 @@ class SiteNoticeBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $this->setConfigurationValue('storage_key_salt', trim((string) $values['advanced']['storage_key_salt']));
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
     // Use block configuration for settings.
     $config = $this->getConfiguration();
 
-    $now = \Drupal::time()->getRequestTime();
+    $now = $this->time->getRequestTime();
     $start_iso = $config['start'];
     $end_iso = $config['end'];
 
     $start_ts = $start_iso ? strtotime($start_iso) : NULL;
     $end_ts = $end_iso ? strtotime($end_iso) : NULL;
 
-    // まだ開始前
+    // まだ開始前.
     if ($start_ts && $now < $start_ts) {
-      // キャッシュを「開始時刻まで」持たせる
+      // キャッシュを「開始時刻まで」持たせる.
       $max_age = max(0, $start_ts - $now);
       $metadata = new CacheableMetadata();
       $metadata->setCacheMaxAge($max_age);
@@ -171,9 +182,9 @@ class SiteNoticeBlock extends BlockBase implements ContainerFactoryPluginInterfa
       return $build;
     }
 
-    // 終了済み
+    // 終了済み.
     if ($end_ts && $now > $end_ts) {
-      // 次の設定更新までキャッシュ（= 非表示）
+      // 次の設定更新までキャッシュ（= 非表示).
       return [
         '#cache' => [
           'tags' => ['config:site_notice.settings'],
@@ -206,7 +217,7 @@ class SiteNoticeBlock extends BlockBase implements ContainerFactoryPluginInterfa
         'drupalSettings' => [
           'siteNotice' => [
             'closable' => $closable,
-            // メッセージと期間からキーを作る。テキスト変更で既読がリセットされる。
+            // メッセージと期間からキーを作る。テキスト変更で既読がリセットされる.
             'storageKey' => 'site_notice_' . substr(hash('sha256',
                 ($message ?: '') . '|' . ($start_iso ?: '') . '|' . ($end_iso ?: '') . '|' . ($config['storage_key_salt'] ?: '')
               ), 0, 16),
@@ -216,7 +227,7 @@ class SiteNoticeBlock extends BlockBase implements ContainerFactoryPluginInterfa
       '#cache' => [
         'tags' => ['config:site_notice.settings'],
         'contexts' => ['timezone'],
-        // 表示期間中は「終了まで」をmax-ageにして自動更新
+        // 表示期間中は「終了まで」をmax-ageにして自動更新.
         'max-age' => ($end_ts ? max(0, $end_ts - $now) : Cache::PERMANENT),
       ],
     ];

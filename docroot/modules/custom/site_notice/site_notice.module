@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Site Notice module hooks and theme definitions.
+ */
+
+/**
  * Implements hook_theme().
  */
 function site_notice_theme($existing, $type, $theme, $path) {
