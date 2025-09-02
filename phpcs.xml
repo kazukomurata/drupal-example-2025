@@ -3,4 +3,5 @@
   <description>Drupal コーディング標準用の PHP_CodeSniffer 設定</description>
   <arg name="extensions" value="engine,inc,install,module,php,profile,test,theme,yml"/>
   <rule ref="Drupal"/>
+  <file>docroot/modules/custom</file>
 </ruleset>

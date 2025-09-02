@@ -1,7 +1,6 @@
 parameters:
   level: 5
   paths:
-    - docroot/modules/*/custom
-    - docroot/modules/*/theme
+    - docroot/modules/custom
   ignoreErrors:
     - "#^Unsafe usage of new static#"
