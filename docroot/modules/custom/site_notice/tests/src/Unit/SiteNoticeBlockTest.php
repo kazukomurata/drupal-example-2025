@@ -7,11 +7,10 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\site_notice\Plugin\Block\SiteNoticeBlock;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @group site_notice
- */
+#[Group('site_notice')]
 class SiteNoticeBlockTest extends UnitTestCase {
 
   protected function setUp(): void {
