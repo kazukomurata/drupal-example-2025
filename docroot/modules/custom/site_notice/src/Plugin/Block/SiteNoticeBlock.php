@@ -175,7 +175,6 @@ class SiteNoticeBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $max_age = max(0, $start_ts - $now);
       $metadata = new CacheableMetadata();
       $metadata->setCacheMaxAge($max_age);
-      $metadata->addCacheTags(['config:site_notice.settings']);
       $metadata->addCacheContexts(['timezone']);
       $build = [];
       $metadata->applyTo($build);
@@ -187,7 +186,6 @@ class SiteNoticeBlock extends BlockBase implements ContainerFactoryPluginInterfa
       // 次の設定更新までキャッシュ（= 非表示).
       return [
         '#cache' => [
-          'tags' => ['config:site_notice.settings'],
           'contexts' => ['timezone'],
           'max-age' => Cache::PERMANENT,
         ],
@@ -225,7 +223,6 @@ class SiteNoticeBlock extends BlockBase implements ContainerFactoryPluginInterfa
         ],
       ],
       '#cache' => [
-        'tags' => ['config:site_notice.settings'],
         'contexts' => ['timezone'],
         // 表示期間中は「終了まで」をmax-ageにして自動更新.
         'max-age' => ($end_ts ? max(0, $end_ts - $now) : Cache::PERMANENT),
