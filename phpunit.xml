@@ -16,6 +16,7 @@
          displayDetailsOnTestsThatTriggerErrors="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
          displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnPhpunitDeprecations="true"
          cacheResult="false"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          cacheDirectory=".phpunit.cache">
@@ -81,4 +82,9 @@
       <parameter name="printCaller" value="true"/>
     </bootstrap>
   </extensions>
+  <testsuites>
+    <testsuite name="Custom Modules">
+      <directory suffix="Test.php">docroot/modules/custom</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
