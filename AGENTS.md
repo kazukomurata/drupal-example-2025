@@ -19,6 +19,7 @@
 - 最終返答の体裁: 箇条書き中心で要点を整理。過度な装飾や引用は不要。
 
 ### 返答のスタイル（要点）
+- 日本語で返答する。
 - 見出しは必要なときのみ（1–3語、太字）。
 - 箇条書きは「太字のキーワード: 端的な説明」。
 - コマンド/パス/識別子はバッククォートで囲む（例: `docroot/modules/custom`）。
@@ -51,6 +52,7 @@
 ## 検証コマンド例
 - PHPCS: `ddev exec phpcs`（全体）または変更ファイルを指定して実行。
 - PHPStan: `ddev exec phpstan analyse`（対象パスは `phpstan.neon` 参照）。
+- PHPUnit: `ddev exec phpunit` （全体）または変更ファイルを指定して実行。
 - Drush（任意）: `ddev drush cr`、`ddev drush status` など。
 
 注: ネットワークが制限されている環境では追加インストールは避け、既存の `vendor/` を活用する。
