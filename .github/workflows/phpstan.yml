@@ -24,7 +24,10 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist --ansi
+        uses: ramsey/composer-install@v3
+        with:
+          composer-options: "--no-interaction --prefer-dist --ansi"
+          dependency-versions: "locked"
 
       - name: PHPStan analyse
         run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
