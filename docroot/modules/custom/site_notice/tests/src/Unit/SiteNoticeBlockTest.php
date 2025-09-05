@@ -10,16 +10,29 @@ use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * Tests for the Site Notice block rendering and cache behavior.
+ */
 #[Group('site_notice')]
 class SiteNoticeBlockTest extends UnitTestCase {
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
-    // Drupal::service('cache_contexts_manager') を使用する箇所を満たすため、
-    // 最小のコンテナをセットする（assertValidTokens() だけ返すスタブ）。
+    // Drupal::service('cache_contexts_manager') を使用する箇所を満たすため.
+    // 最小のコンテナをセットする（assertValidTokens() だけ返すスタブ).
     $container = new ContainerBuilder();
     $container->set('cache_contexts_manager', new class() {
-      public function assertValidTokens(array $contexts): bool { return TRUE; }
+
+      /**
+       * Validates cache context tokens.
+       */
+      public function assertValidTokens(array $contexts): bool {
+        return TRUE;
+      }
+
     });
     \Drupal::setContainer($container);
   }
@@ -33,7 +46,7 @@ class SiteNoticeBlockTest extends UnitTestCase {
 
     $config_factory = $this->createMock(ConfigFactoryInterface::class);
 
-    // provider/admin_label が無いと BlockPluginTrait で warning になる。
+    // provider/admin_label が無いと BlockPluginTrait で warning になる.
     $plugin_definition = [
       'provider' => 'site_notice',
       'admin_label' => 'Site Notice Bar',
@@ -67,9 +80,13 @@ class SiteNoticeBlockTest extends UnitTestCase {
     return $overrides + $base;
   }
 
+  /**
+   * Tests build result before the start time.
+   */
   public function testBuildBeforeStartReturnsEmptyWithCacheUntilStart(): void {
     $now = 1_700_000_000;
-    $start = $now + 3600; // 1 hour later.
+    // 1 hour later.
+    $start = $now + 3600;
     $config = $this->baseConfig([
       'start' => gmdate(DATE_ATOM, $start),
     ]);
@@ -86,9 +103,13 @@ class SiteNoticeBlockTest extends UnitTestCase {
     $this->assertArrayNotHasKey('#theme', $build);
   }
 
+  /**
+   * Tests build result after the end time.
+   */
   public function testBuildAfterEndReturnsEmptyWithPermanentCache(): void {
     $now = 1_700_000_000;
-    $end = $now - 1; // Already ended.
+    // Already ended.
+    $end = $now - 1;
     $config = $this->baseConfig([
       'end' => gmdate(DATE_ATOM, $end),
     ]);
@@ -102,10 +123,14 @@ class SiteNoticeBlockTest extends UnitTestCase {
     $this->assertArrayNotHasKey('#theme', $build);
   }
 
+  /**
+   * Tests build result within the active window including cache/settings.
+   */
   public function testBuildWithinWindowRendersWithExpectedCacheAndSettings(): void {
     $now = 1_700_000_000;
     $start = $now - 10;
-    $end = $now + 7200; // 2 hours later.
+    // 2 hours later.
+    $end = $now + 7200;
     $message = 'Important notice';
     $salt = 'abc';
     $config = $this->baseConfig([
@@ -126,17 +151,28 @@ class SiteNoticeBlockTest extends UnitTestCase {
 
     // Renders with theme and attachments.
     $this->assertSame('site_notice', $build['#theme']);
-    $this->assertTrue(in_array('site_notice/notice', $build['#attached']['library'], TRUE));
+    $this->assertTrue(
+      in_array('site_notice/notice', $build['#attached']['library'], TRUE)
+    );
     $this->assertTrue($build['#attached']['drupalSettings']['siteNotice']['closable']);
 
-    // Storage key is derived from message/start/end/salt (sha256, first 16 chars).
-    $expected_key = 'site_notice_' . substr(hash('sha256',
-      $message . '|' . gmdate(DATE_ATOM, $start) . '|' . gmdate(DATE_ATOM, $end) . '|' . $salt
-    ), 0, 16);
-    $this->assertSame($expected_key, $build['#attached']['drupalSettings']['siteNotice']['storageKey']);
+    // Storage key is derived from message/start/end/salt.
+    $expected_key = 'site_notice_' . substr(
+      hash(
+        'sha256',
+        $message . '|' . gmdate(DATE_ATOM, $start) . '|' . gmdate(DATE_ATOM, $end) . '|' . $salt,
+      ),
+      0,
+      16
+    );
+    $this->assertSame(
+      $expected_key,
+      $build['#attached']['drupalSettings']['siteNotice']['storageKey']
+    );
 
     // Cache metadata: tags/contexts present, max-age until end.
     $this->assertContains('timezone', $build['#cache']['contexts']);
     $this->assertSame($end - $now, $build['#cache']['max-age']);
   }
+
 }
