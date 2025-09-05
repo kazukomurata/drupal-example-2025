@@ -1,4 +1,4 @@
-name: PHPStan (PR to main)
+name: PHPCS (PR to main)
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  phpstan:
-    name: Run PHPStan
+  phpcs:
+    name: Run PHPCS
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,6 +29,6 @@ jobs:
           composer-options: "--no-interaction --prefer-dist --ansi"
           dependency-versions: "locked"
 
-      - name: PHPStan analyse
-        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+      - name: PHPCS
+        run: vendor/bin/phpcs
 
