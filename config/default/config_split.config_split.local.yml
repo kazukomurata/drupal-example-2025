@@ -1,0 +1,17 @@
+uuid: fbc31e01-d3d9-452b-8512-290a97079b94
+langcode: en
+status: false
+dependencies: {  }
+id: local
+label: local
+description: ''
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/local
+module:
+  dblog: 0
+theme: {  }
+complete_list: {  }
+partial_list: {  }

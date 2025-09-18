@@ -10,10 +10,11 @@ module:
   ckeditor5: 0
   comment: 0
   config: 0
+  config_ignore: 0
+  config_split: 0
   contact: 0
   contextual: 0
   datetime: 0
-  dblog: 0
   dynamic_page_cache: 0
   editor: 0
   field: 0
