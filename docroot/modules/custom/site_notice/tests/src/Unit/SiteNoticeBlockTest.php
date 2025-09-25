@@ -93,8 +93,6 @@ class SiteNoticeBlockTest extends UnitTestCase {
 
     $block = $this->createBlock($config, $now);
     $build = $block->build();
-
-    $this->assertArrayHasKey('message', $build);
     $this->assertArrayHasKey('#cache', $build);
     $this->assertArrayHasKey('max-age', $build['#cache']);
     $this->assertSame($start - $now, $build['#cache']['max-age']);

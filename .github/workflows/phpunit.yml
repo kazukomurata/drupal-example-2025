@@ -1,0 +1,66 @@
+name: PHPUnit
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  phpunit:
+    name: Run PHPUnit
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        # ランナー（Ubuntu）の 3306 に公開。アプリは 127.0.0.1:3306 へ接続
+        ports: [ "3306:3306" ]
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test
+          MYSQL_USER: db
+          MYSQL_PASSWORD: db
+        # DB が ready になるまで待つ（重要）
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, mbstring, intl
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          composer-options: "--no-interaction --prefer-dist --ansi"
+          dependency-versions: "locked"
+      - name: Wait for MySQL
+        run: |
+          for i in {1..30}; do
+            if mysqladmin ping -h 127.0.0.1 -proot --silent; then
+              echo "MySQL is up"; break
+            fi
+            sleep 2
+          done
+      - name: Prepare PHPUnit
+        run: |
+          cd ./docroot
+          php -S localhost:8080 > /dev/null 2>&1 &
+          cd ../
+      - name: Run PHPUnit
+        env:
+          SIMPLETEST_DB: mysql://db:db@127.0.0.1/test
+          SIMPLETEST_BASE_URL: http://localhost:8080
+        run: vendor/bin/phpunit --colors=always
+
