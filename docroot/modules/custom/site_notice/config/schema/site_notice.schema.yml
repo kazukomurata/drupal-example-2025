@@ -1,0 +1,25 @@
+block.settings.site_notice_block:
+  type: block_settings
+  label: 'Site notice block settings'
+  mapping:
+    message:
+      type: text_format
+      label: 'Notice message'
+    link_url:
+      type: string
+      label: 'Link URL'
+    start:
+      type: string
+      label: 'Start datetime'
+    end:
+      type: string
+      label: 'End datetime'
+    background:
+      type: string
+      label: 'Background color'
+    closable:
+      type: boolean
+      label: 'Show close button'
+    storage_key_salt:
+      type: string
+      label: 'Storage key salt'
